@@ -32,9 +32,9 @@ const ContentManagement = () => {
     loadExistingContent();
   }, []);
 
-  const loadExistingContent = () => {
+  const loadExistingContent = async () => {
     try {
-      const savedContent = loadContent();
+      const savedContent = await loadContent();
       setContent(savedContent);
     } catch (error) {
       console.warn('Error loading content:', error);
@@ -47,11 +47,11 @@ const ContentManagement = () => {
     setSuccess(null);
 
     try {
-      const success = saveContent(content);
-      
+      const success = await saveContent(content);
+
       if (success) {
         setSuccess('Content saved successfully!');
-        
+
         // Clear success message after 3 seconds
         setTimeout(() => {
           setSuccess(null);
@@ -66,15 +66,15 @@ const ContentManagement = () => {
     }
   };
 
-  const handleDeleteContent = () => {
+  const handleDeleteContent = async () => {
     if (window.confirm('Are you sure you want to delete all content? This action cannot be undone.')) {
       try {
-        const success = deleteContent();
-        
+        const success = await deleteContent();
+
         if (success) {
           setContent('');
           setSuccess('Content deleted successfully!');
-          
+
           // Clear success message after 3 seconds
           setTimeout(() => {
             setSuccess(null);
@@ -95,7 +95,7 @@ const ContentManagement = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -107,7 +107,7 @@ const ContentManagement = () => {
       </div>
 
       {success && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"
@@ -117,7 +117,7 @@ const ContentManagement = () => {
       )}
 
       {error && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"

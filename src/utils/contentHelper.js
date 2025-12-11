@@ -1,23 +1,64 @@
 /**
  * Content Management Helper Functions
- * Handles localStorage operations for custom content section
+ * Handles Supabase database operations for custom content section
  */
 
-const CONTENT_STORAGE_KEY = 'customSectionContent';
+import { supabase } from '../supabaseClient';
+
+const TABLE_NAME = 'website_prozent';
 
 /**
- * Save content to localStorage
+ * Save content to Supabase
  * @param {string} content - HTML content to save
+ * @returns {Promise<boolean>} - True if successful
  */
-export const saveContent = (content) => {
+export const saveContent = async (content) => {
   try {
-    localStorage.setItem(CONTENT_STORAGE_KEY, content);
-    
+    // First, try to get existing content
+    const { data: existing, error: fetchError } = await supabase
+      .from(TABLE_NAME)
+      .select('id')
+      .limit(1)
+      .maybeSingle();
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Error checking existing content:', fetchError);
+      throw fetchError;
+    }
+
+    let result;
+    if (existing) {
+      // Update existing content
+      result = await supabase
+        .from(TABLE_NAME)
+        .update({
+          content: content,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', existing.id);
+    } else {
+      // Insert new content
+      result = await supabase
+        .from(TABLE_NAME)
+        .insert([{
+          content: content,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }]);
+    }
+
+    if (result.error) {
+      console.error('Error saving content:', result.error);
+      throw result.error;
+    }
+
     // Dispatch custom event for real-time updates
-    window.dispatchEvent(new CustomEvent('contentUpdated', { 
-      detail: { content: content } 
-    }));
-    
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('contentUpdated', {
+        detail: { content: content }
+      }));
+    }
+
     return true;
   } catch (error) {
     console.error('Error saving content:', error);
@@ -26,12 +67,27 @@ export const saveContent = (content) => {
 };
 
 /**
- * Load content from localStorage
- * @returns {string} - HTML content or empty string
+ * Load content from Supabase
+ * @returns {Promise<string>} - HTML content or empty string
  */
-export const loadContent = () => {
+export const loadContent = async () => {
   try {
-    return localStorage.getItem(CONTENT_STORAGE_KEY) || '';
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .select('content')
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No rows returned, return empty string
+        return '';
+      }
+      console.error('Error loading content:', error);
+      return '';
+    }
+
+    return data?.content || '';
   } catch (error) {
     console.error('Error loading content:', error);
     return '';
@@ -39,17 +95,46 @@ export const loadContent = () => {
 };
 
 /**
- * Delete content from localStorage
+ * Delete content from Supabase
+ * @returns {Promise<boolean>} - True if successful
  */
-export const deleteContent = () => {
+export const deleteContent = async () => {
   try {
-    localStorage.removeItem(CONTENT_STORAGE_KEY);
-    
+    // Get the first record
+    const { data: existing, error: fetchError } = await supabase
+      .from(TABLE_NAME)
+      .select('id')
+      .limit(1)
+      .maybeSingle();
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Error finding content to delete:', fetchError);
+      throw fetchError;
+    }
+
+    if (existing) {
+      // Update content to empty string instead of deleting the row
+      const { error: updateError } = await supabase
+        .from(TABLE_NAME)
+        .update({
+          content: '',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', existing.id);
+
+      if (updateError) {
+        console.error('Error deleting content:', updateError);
+        throw updateError;
+      }
+    }
+
     // Dispatch custom event for real-time updates
-    window.dispatchEvent(new CustomEvent('contentUpdated', { 
-      detail: { content: '' } 
-    }));
-    
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('contentUpdated', {
+        detail: { content: '' }
+      }));
+    }
+
     return true;
   } catch (error) {
     console.error('Error deleting content:', error);
@@ -59,12 +144,25 @@ export const deleteContent = () => {
 
 /**
  * Check if content exists
- * @returns {boolean} - True if content exists
+ * @returns {Promise<boolean>} - True if content exists
  */
-export const hasContent = () => {
+export const hasContent = async () => {
   try {
-    const content = localStorage.getItem(CONTENT_STORAGE_KEY);
-    return content && content.trim().length > 0;
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .select('content')
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return false;
+      }
+      console.error('Error checking content:', error);
+      return false;
+    }
+
+    return data?.content && data.content.trim().length > 0;
   } catch (error) {
     console.error('Error checking content:', error);
     return false;
@@ -73,11 +171,11 @@ export const hasContent = () => {
 
 /**
  * Get content length
- * @returns {number} - Content length in characters
+ * @returns {Promise<number>} - Content length in characters
  */
-export const getContentLength = () => {
+export const getContentLength = async () => {
   try {
-    const content = localStorage.getItem(CONTENT_STORAGE_KEY);
+    const content = await loadContent();
     return content ? content.length : 0;
   } catch (error) {
     console.error('Error getting content length:', error);

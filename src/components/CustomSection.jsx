@@ -5,11 +5,12 @@ import './CustomSection.css';
 const CustomSection = () => {
   const [content, setContent] = useState('');
   const [isVisible, setIsVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Load content on component mount
     loadContentFromStorage();
-    
+
     // Listen for content updates from admin panel
     const handleContentUpdate = (event) => {
       const newContent = event.detail.content;
@@ -19,36 +20,28 @@ const CustomSection = () => {
 
     window.addEventListener('contentUpdated', handleContentUpdate);
 
-    // Also listen for storage changes (when localStorage is updated from other tabs)
-    const handleStorageChange = (e) => {
-      if (e.key === 'customSectionContent') {
-        const newContent = e.newValue || '';
-        setContent(newContent);
-        setIsVisible(newContent && newContent.trim().length > 0);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
     return () => {
       window.removeEventListener('contentUpdated', handleContentUpdate);
-      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
-  const loadContentFromStorage = () => {
+  const loadContentFromStorage = async () => {
     try {
-      const savedContent = loadContent();
+      setLoading(true);
+      const savedContent = await loadContent();
+      const contentExists = await hasContent();
       setContent(savedContent);
-      setIsVisible(hasContent());
+      setIsVisible(contentExists);
     } catch (error) {
       console.warn('Error loading custom content:', error);
       setIsVisible(false);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Don't render if no content
-  if (!isVisible || !content || content.trim().length === 0) {
+  // Don't render if loading or no content
+  if (loading || !isVisible || !content || content.trim().length === 0) {
     return null;
   }
 
@@ -56,7 +49,7 @@ const CustomSection = () => {
     <div className="w-full">
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-white rounded-2xl shadow-lg p-6">
-          <div 
+          <div
             className="prose prose-lg max-w-none custom-content"
             dangerouslySetInnerHTML={{ __html: content }}
             style={{
