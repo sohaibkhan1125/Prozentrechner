@@ -2,31 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { saveContent, loadContent, deleteContent } from '../../utils/contentHelper';
 import './ContentManagement.css';
-
-// Froala editor imports
-import FroalaEditorComponent from 'react-froala-wysiwyg';
-import 'froala-editor/css/froala_style.min.css';
-import 'froala-editor/css/froala_editor.pkgd.min.css';
-import 'froala-editor/js/plugins.pkgd.min.js';
-import 'font-awesome/css/font-awesome.css';
-import 'froala-editor/js/third_party/font_awesome.min.js';
+import QuillEditor from '../../components/QuillEditor';
 
 const ContentManagement = () => {
   const [content, setContent] = useState('');
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
-
-  const froalaConfig = {
-    key: 'nQE2uG3B1F1nmnspC5qpH3B3C11A6D5F5F5G4A-8A-7A2cefE3B2F3C2G2ilva1EAJLQCVLUVBf1NXNRSSATEXA-62WVLGKF2G2H2G1I4B3B2B8D7F6==',
-    placeholderText: 'Type or paste your content here!',
-    toolbarButtons: [
-      ['undo', 'redo', '|', 'bold', 'italic', 'underline', 'strikeThrough'],
-      ['paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent'],
-      ['insertLink', 'insertTable', 'quote', 'html']
-    ],
-    charCounterCount: true
-  };
 
   useEffect(() => {
     loadExistingContent();
@@ -126,37 +108,26 @@ const ContentManagement = () => {
         </motion.div>
       )}
 
-      {/* Rich Text Editor (Froala) */}
+      {/* Rich Text Editor (Quill) */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Content Editor
         </label>
-        <div className="border-2 border-gray-300 rounded-lg overflow-hidden focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200">
-          <FroalaEditorComponent
-            tag='textarea'
-            model={content}
-            onModelChange={setContent}
-            config={froalaConfig}
-          />
-        </div>
-        <div className="mt-2 text-sm text-gray-500">
-          Character count: {content.replace(/<[^>]*>/g, '').length}
-        </div>
+        {/* Removed wrapper div that had border as QuillEditor has its own styling */}
+        <QuillEditor
+          value={content}
+          onChange={setContent}
+        />
       </div>
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4">
-        <button
-          onClick={handleClearContent}
-          className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
-        >
-          Clear Content
-        </button>
+        {/* Reset clears local changes to what is in DB, but actually just reloads here */}
         <button
           onClick={loadExistingContent}
           className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200"
         >
-          Reset
+          Reset to Saved
         </button>
         <button
           onClick={handleDeleteContent}
