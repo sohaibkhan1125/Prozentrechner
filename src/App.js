@@ -18,6 +18,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CustomSection from './components/CustomSection';
 import HeroSection from './components/HeroSection';
+import SEO from './components/SEO';
 
 // Calculator 1: What is X % of Y?
 const Calculator1 = () => {
@@ -39,7 +40,7 @@ const Calculator1 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: What is {percentage || '3'} % of {basicValue || '200'} ?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Percentage Input */}
@@ -110,7 +111,7 @@ const Calculator2 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: What percent is {basicValue || '50'} of {initialValue || '200'} ?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Basic Value Input */}
@@ -181,7 +182,7 @@ const Calculator3 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: Percent difference between {initialValue || '50'} and {finalValue || '75'} ?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Initial Value Input */}
@@ -252,7 +253,7 @@ const Calculator4 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: What is {basicValue || '100'} + {percentageValue || '10'} %?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Basic Value Input */}
@@ -323,7 +324,7 @@ const Calculator5 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: How much is {basicValue || '100'} - {percentageValue || '10'} %?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Basic Value Input */}
@@ -394,7 +395,7 @@ const Calculator6 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: What percentage is {percentage || '50'} to {basicValue || '25'} ?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Percentage Input */}
@@ -465,7 +466,7 @@ const Calculator7 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: What is {percentage || '100'} before adding {basicValue || '10'} %?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Percentage Input */}
@@ -536,7 +537,7 @@ const Calculator8 = () => {
   return (
     <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-8 mb-8">
       <h3 className="text-xl font-bold text-gray-800 mb-6">Question: What is {percentage || '100'} before subtracting {basicValue || '10'} %?</h3>
-      
+
       {/* Input Fields Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {/* Percentage Input */}
@@ -663,6 +664,11 @@ const SimpleSection = ({ children }) => {
 const CalculatorApp = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+      <SEO
+        title="Prozentrechner Online – Einfach Prozent berechnen"
+        description="Berechne Prozente einfach, schnell und kostenlos. Egal ob Prozentsatz, Grundwert oder Prozentwert - unser Online-Rechner hilft dir sofort weiter!"
+        canonical="https://prozentrechner.de/"
+      />
       {/* Header */}
       <Navbar />
 
@@ -677,7 +683,7 @@ const CalculatorApp = () => {
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">
             Alle Prozentrechner
           </h2>
-          
+
           <Calculator1 />
           <Calculator2 />
           <Calculator3 />
@@ -696,11 +702,11 @@ const CalculatorApp = () => {
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Was sind Prozente?</h2>
               <p className="text-gray-600 mb-4">
-                Prozente sind eine Möglichkeit, Anteile oder Verhältnisse auszudrücken. 
+                Prozente sind eine Möglichkeit, Anteile oder Verhältnisse auszudrücken.
                 Das Wort "Prozent" kommt aus dem Lateinischen und bedeutet "von Hundert".
               </p>
               <p className="text-gray-600 mb-4">
-                Ein Prozent entspricht einem Hundertstel (1/100) des Ganzen. Wenn du 25% 
+                Ein Prozent entspricht einem Hundertstel (1/100) des Ganzen. Wenn du 25%
                 von einem Kuchen hast, bedeutet das, dass du 25 von 100 Teilen besitzt.
               </p>
               <div className="bg-blue-50 p-4 rounded-lg">
@@ -740,7 +746,7 @@ const CalculatorApp = () => {
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">
             Praktische Beispiele für alle Rechner
           </h2>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Calculator Examples */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -751,13 +757,13 @@ const CalculatorApp = () => {
                   <p className="text-blue-700 text-sm">Was sind 25% von 200€?</p>
                   <p className="text-blue-600 text-sm">→ 25% × 200€ = 50€</p>
                 </div>
-                
+
                 <div className="bg-green-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-green-800 mb-2">2. Prozentanteil berechnen</h4>
                   <p className="text-green-700 text-sm">Wie viel Prozent sind 50 von 200?</p>
                   <p className="text-green-600 text-sm">→ (50 ÷ 200) × 100 = 25%</p>
                 </div>
-                
+
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-purple-800 mb-2">3. Prozentunterschied</h4>
                   <p className="text-purple-700 text-sm">Unterschied zwischen 50€ und 75€?</p>
@@ -774,13 +780,13 @@ const CalculatorApp = () => {
                   <p className="text-orange-700 text-sm">100€ + 10% Mehrwertsteuer?</p>
                   <p className="text-orange-600 text-sm">→ 100€ + (100€ × 10%) = 110€</p>
                 </div>
-                
+
                 <div className="bg-red-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-red-800 mb-2">5. Prozent abziehen</h4>
                   <p className="text-red-700 text-sm">100€ - 10% Rabatt?</p>
                   <p className="text-red-600 text-sm">→ 100€ - (100€ × 10%) = 90€</p>
                 </div>
-                
+
                 <div className="bg-indigo-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-indigo-800 mb-2">6. Prozentverhältnis</h4>
                   <p className="text-indigo-700 text-sm">50 ist wie viel Prozent von 25?</p>
@@ -799,7 +805,7 @@ const CalculatorApp = () => {
                   <p className="text-teal-700 text-sm">Was war der Preis vor 10% Steuer?</p>
                   <p className="text-teal-600 text-sm">→ 110€ ÷ (1 + 10%) = 100€</p>
                 </div>
-                
+
                 <div className="bg-pink-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-pink-800 mb-2">8. Vor Abziehen</h4>
                   <p className="text-pink-700 text-sm">Was war der Preis vor 10% Rabatt?</p>
@@ -817,14 +823,14 @@ const CalculatorApp = () => {
                   <p className="text-yellow-700 text-sm">• Rabatte und Steuern</p>
                   <p className="text-yellow-700 text-sm">• Preisvergleiche</p>
                 </div>
-                
+
                 <div className="bg-cyan-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-cyan-800 mb-2">📊 Statistiken</h4>
                   <p className="text-cyan-700 text-sm">• Umfrageergebnisse</p>
                   <p className="text-cyan-700 text-sm">• Wachstumsraten</p>
                   <p className="text-cyan-700 text-sm">• Erfolgsquoten</p>
                 </div>
-                
+
                 <div className="bg-lime-50 p-4 rounded-lg">
                   <h4 className="font-semibold text-lime-800 mb-2">🏪 Geschäft</h4>
                   <p className="text-lime-700 text-sm">• Gewinnmargen</p>
@@ -847,7 +853,7 @@ const CalculatorApp = () => {
                 <h4 className="font-semibold text-gray-800 mb-2">Wachstum verstehen</h4>
                 <p className="text-gray-600 text-sm">Prozente helfen dir, Veränderungen und Trends zu erkennen</p>
               </div>
-              
+
               <div className="text-center">
                 <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-green-600">💡</span>
@@ -855,7 +861,7 @@ const CalculatorApp = () => {
                 <h4 className="font-semibold text-gray-800 mb-2">Entscheidungen treffen</h4>
                 <p className="text-gray-600 text-sm">Bessere finanzielle und geschäftliche Entscheidungen</p>
               </div>
-              
+
               <div className="text-center">
                 <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-purple-600">🎯</span>
@@ -949,29 +955,42 @@ function App() {
             <CalculatorApp />
           </MaintenanceWrapper>
         } />
-        
+
         {/* Admin Routes - Always accessible regardless of maintenance mode */}
-        <Route path="/admin/login" element={<Login />} />
-        <Route path="/admin/signup" element={<Signup />} />
-        
+        <Route path="/admin/login" element={
+          <>
+            <SEO title="Admin Login" noindex={true} />
+            <Login />
+          </>
+        } />
+        <Route path="/admin/signup" element={
+          <>
+            <SEO title="Admin Signup" noindex={true} />
+            <Signup />
+          </>
+        } />
+
         {/* Protected Admin Routes */}
-        <Route 
-          path="/admin" 
+        <Route
+          path="/admin"
           element={
             <AdminRoute>
               <Navigate to="/admin/dashboard" replace />
             </AdminRoute>
-          } 
+          }
         />
-        <Route 
-          path="/admin/dashboard" 
+        <Route
+          path="/admin/dashboard"
           element={
             <AdminRoute>
-              <Dashboard />
+              <>
+                <SEO title="Admin Dashboard" noindex={true} />
+                <Dashboard />
+              </>
             </AdminRoute>
-          } 
+          }
         />
-        
+
         {/* Catch all route - redirect to home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
