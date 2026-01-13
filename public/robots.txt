@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://prozentrechner.de/sitemap.xml
+Sitemap: https://prozentrechneronline24.de/sitemap.xml
